@@ -63,7 +63,7 @@ public class Main {
 		Session session = HibernateSession.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
-			// Crear persons (Students y Teachers)
+			// Crear persones
 			Student s1 = new Student("Anna Lopez", null, "111111111", "STU001", null);
 			Student s2 = new Student("Jordi Martinez", null, "222222222", "STU002", null);
 			Student s3 = new Student("Clara Sanchez", null, "333333333", "STU003", null);
@@ -156,12 +156,12 @@ public class Main {
 			if (v != null) {
 				v.setBrand("Seat");
 				v.setYear(2022);
-				// Campo price añadido en la entidad Vehicle
+				
 				try {
 					java.lang.reflect.Method m = v.getClass().getMethod("setPrice", Double.class);
 					m.invoke(v, 19999.0);
 				} catch (NoSuchMethodException nsme) {
-					// Si no existeix el setter (no hauria de passar), ignorar
+					
 				}
 				session.update(v);
 				tx.commit();
