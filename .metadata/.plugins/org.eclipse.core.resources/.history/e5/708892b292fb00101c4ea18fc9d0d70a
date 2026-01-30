@@ -1,0 +1,16 @@
+package anotacions;
+
+/**
+ * Este archivo está siendo reemplazado por la estructura de paquetes correcta.
+ * Las clases de entidad JPA se encuentran en:
+ * - es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain.Person (clase base)
+ * - es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain.Student (hereda de Person)
+ * - es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain.Teacher (hereda de Person)
+ * - es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain.Vehicle (clase base)
+ * - es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain.Car (hereda de Vehicle)
+ * - es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain.Plane (hereda de Vehicle)
+ * - es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain.Motorcycle (hereda de Vehicle)
+ */
+@Deprecated
+public class person {
+}

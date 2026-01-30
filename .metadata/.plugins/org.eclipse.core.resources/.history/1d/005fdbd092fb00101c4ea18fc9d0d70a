@@ -1,0 +1,18 @@
+package snippet;
+
+public class Snippet {
+	Este ejercicio de la asignatura Acceso a Datos consiste en diseñar un modelo de persistencia en Java utilizando JPA (Java Persistence API). El objetivo es mapear una jerarquía de clases a una base de datos relacional siguiendo un diagrama de clases y un esquema de base de datos específico.
+	
+	Explicación del Ejercicio
+	El reto principal es configurar correctamente la herencia y las relaciones entre las entidades:
+	
+	
+	Herencia de Personas (Single Table): Las clases Teacher y Student heredan de Person. Según el esquema de base de datos proporcionado, toda la información de estas tres clases se guarda en una única tabla llamada person , diferenciándolas mediante una columna llamada person_type.
+	
+	
+	Herencia de Vehículos (Joined): Las clases Car, Plane y Motorcycle heredan de Vehicle. A diferencia de las personas, aquí el esquema muestra tablas separadas para cada tipo de vehículo (car, plane, motorcycle) que se unen a la tabla padre vehicle . Esto requiere la estrategia JOINED.
+	
+	
+	Relación One-to-Many: Una Person posee (owns) de 0 a muchos vehículos. En la base de datos, esto se refleja con la columna person_id dentro de la tabla vehicle.
+}
+
