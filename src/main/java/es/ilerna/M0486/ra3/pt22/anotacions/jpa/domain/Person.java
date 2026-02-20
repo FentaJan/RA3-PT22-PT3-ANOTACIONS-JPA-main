@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+// Importaciones JPA
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -19,24 +20,51 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * Clase Person - Entidad base para Teacher y Student
- * Utiliza herencia SINGLE_TABLE: toda la información se guarda en una única tabla "person"
- * La columna "person_type" diferencia entre Teacher, Student y Person
+ * Entidad Person
+ *
+ * - Clase base para Teacher y Student
+ * - Usa herencia SINGLE_TABLE
+ * - Todos los tipos de personas se almacenan en la tabla "person"
+ * - La columna "person_type" distingue el subtipo
  */
-@Entity
-@Table(name = "person")
+@Entity                         // Marca la clase como entidad JPA
+@Table(name = "person")         // Tabla única para toda la jerarquía
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "person_type", discriminatorType = DiscriminatorType.STRING)
+/*
+ * SINGLE_TABLE:
+ * - Una sola tabla para Person, Teacher y Student
+ * - Columnas extra pueden ser NULL según el subtipo
+ */
+@DiscriminatorColumn(
+		name = "person_type",
+		discriminatorType = DiscriminatorType.STRING
+)
+/*
+ * Columna que indica el tipo real de la entidad:
+ * por ejemplo: "STUDENT", "TEACHER"
+ */
 public class Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	// Requerido para entidades serializables
+
+	// ===== CLAVE PRIMARIA =====
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	/*
+	 * IDENTITY:
+	 * - La base de datos genera el ID (AUTO_INCREMENT)
+	 */
 	@Column(name = "person_id")
 	private Integer personId;
 
+	// ===== ATRIBUTOS BÁSICOS =====
+
 	@Column(name = "name", nullable = false)
+	/*
+	 * Nombre obligatorio (NOT NULL en la BD)
+	 */
 	private String name;
 
 	@Column(name = "email")
@@ -45,21 +73,39 @@ public class Person implements Serializable {
 	@Column(name = "phone")
 	private String phone;
 
-	// Relación One-to-Many con Vehicle
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	// ===== RELACIÓN ONE-TO-MANY CON VEHICLE =====
+
+	@OneToMany(
+			mappedBy = "owner",          // Campo en Vehicle que mantiene la FK
+			cascade = CascadeType.ALL,   // Propaga persist, remove, update, etc.
+			fetch = FetchType.LAZY       // Carga diferida (recomendado)
+	)
+	/*
+	 * Relación bidireccional:
+	 * - Una persona puede tener muchos vehículos
+	 * - Vehicle tiene la FK (ManyToOne)
+	 */
 	private Set<Vehicle> vehicles = new HashSet<>();
 
-	// Constructores
+	// ===== CONSTRUCTORES =====
+
+	/**
+	 * Constructor vacío obligatorio para JPA.
+	 */
 	public Person() {
 	}
 
+	/**
+	 * Constructor de conveniencia.
+	 */
 	public Person(String name, String email, String phone) {
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
 	}
 
-	// Getters y Setters
+	// ===== GETTERS Y SETTERS =====
+
 	public Integer getPersonId() {
 		return personId;
 	}
@@ -100,18 +146,34 @@ public class Person implements Serializable {
 		this.vehicles = vehicles;
 	}
 
+	// ===== MÉTODOS DE GESTIÓN DE LA RELACIÓN =====
+
+	/**
+	 * Añade un vehículo a la persona y
+	 * sincroniza ambos lados de la relación.
+	 */
 	public void addVehicle(Vehicle vehicle) {
-		vehicles.add(vehicle);
-		vehicle.setOwner(this);
+		vehicles.add(vehicle);     // lado OneToMany
+		vehicle.setOwner(this);    // lado ManyToOne (FK)
 	}
 
+	/**
+	 * Elimina un vehículo de la persona
+	 * y rompe la relación bidireccional.
+	 */
 	public void removeVehicle(Vehicle vehicle) {
 		vehicles.remove(vehicle);
 		vehicle.setOwner(null);
 	}
 
+	// ===== MÉTODOS =====
+
 	@Override
 	public String toString() {
-		return "Person [personId=" + personId + ", name=" + name + ", email=" + email + ", phone=" + phone + "]";
+		return "Person [personId=" + personId
+				+ ", name=" + name
+				+ ", email=" + email
+				+ ", phone=" + phone
+				+ "]";
 	}
 }

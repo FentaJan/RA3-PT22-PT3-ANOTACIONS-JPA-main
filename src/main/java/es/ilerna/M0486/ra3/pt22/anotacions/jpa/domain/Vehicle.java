@@ -2,6 +2,7 @@ package es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain;
 
 import java.io.Serializable;
 
+// Importaciones JPA
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -17,55 +18,124 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * Clase Vehicle - Entidad base para Car, Plane y Motorcycle
- * Utiliza herencia JOINED: tablas separadas (car, plane, motorcycle) unidas a vehicle
- * La relación Many-to-One con Person se establece aquí
+ * Entidad Vehicle
+ *
+ * - Clase base para Car, Plane y Motorcycle
+ * - Usa herencia JPA con estrategia JOINED
+ * - Contiene los atributos comunes a todos los vehículos
+ * - Define la relación Many-to-One con Person
  */
-@Entity
-@Table(name = "vehicle")
+@Entity                         // Marca la clase como entidad JPA
+@Table(name = "vehicle")        // Tabla base de la jerarquía
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "vehicle_type", discriminatorType = DiscriminatorType.STRING)
+/*
+ * JOINED:
+ * - vehicle → atributos comunes
+ * - car / plane / motorcycle → atributos específicos
+ * - Se realizan JOINs al consultar
+ */
+@DiscriminatorColumn(
+		name = "vehicle_type",
+		discriminatorType = DiscriminatorType.STRING
+)
+/*
+ * Columna que indica el subtipo real del vehículo:
+ * "CAR", "PLANE", "MOTORCYCLE"
+ */
 public class Vehicle implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	// Necesario para entidades JPA serializables
+
+	// ===== CLAVE PRIMARIA =====
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	/*
+	 * IDENTITY:
+	 * - El ID se genera automáticamente en la base de datos
+	 */
 	@Column(name = "vehicle_id")
 	private Integer vehicleId;
 
+	// ===== ATRIBUTOS COMUNES =====
+
 	@Column(name = "brand", nullable = false)
+	/*
+	 * Marca del vehículo (obligatoria)
+	 */
 	private String brand;
 
 	@Column(name = "model", nullable = false)
+	/*
+	 * Modelo del vehículo (obligatorio)
+	 */
 	private String model;
 
 	@Column(name = "year")
+	/*
+	 * Año de fabricación
+	 */
 	private Integer year;
 
 	@Column(name = "price")
+	/*
+	 * Precio del vehículo
+	 */
 	private Double price;
 
 	@Column(name = "license_plate", unique = true)
+	/*
+	 * Matrícula del vehículo.
+	 * Se marca como UNIQUE para evitar duplicados.
+	 */
 	private String licensePlate;
 
-	// Relación Many-to-One con Person
+	// ===== RELACIÓN MANY-TO-ONE CON PERSON =====
+
 	@ManyToOne(fetch = FetchType.LAZY)
+	/*
+	 * Muchos vehículos pueden pertenecer a una persona.
+	 * Este es el lado propietario de la relación.
+	 */
 	@JoinColumn(name = "person_id")
+	/*
+	 * Clave foránea en la tabla vehicle que apunta a person.person_id
+	 */
 	private Person owner;
 
-	// Constructores
+	// ===== CONSTRUCTORES =====
+
+	/**
+	 * Constructor vacío obligatorio para JPA.
+	 */
 	public Vehicle() {
 	}
 
-	public Vehicle(String brand, String model, Integer year, String licensePlate) {
+	/**
+	 * Constructor sin precio.
+	 * Inicializa los atributos comunes.
+	 */
+	public Vehicle(String brand,
+				   String model,
+				   Integer year,
+				   String licensePlate) {
+
 		this.brand = brand;
 		this.model = model;
 		this.year = year;
 		this.licensePlate = licensePlate;
 	}
 
-	public Vehicle(String brand, String model, Integer year, String licensePlate, Double price) {
+	/**
+	 * Constructor con precio.
+	 */
+	public Vehicle(String brand,
+				   String model,
+				   Integer year,
+				   String licensePlate,
+				   Double price) {
+
 		this.brand = brand;
 		this.model = model;
 		this.year = year;
@@ -73,7 +143,8 @@ public class Vehicle implements Serializable {
 		this.price = price;
 	}
 
-	// Getters y Setters
+	// ===== GETTERS Y SETTERS =====
+
 	public Integer getVehicleId() {
 		return vehicleId;
 	}
@@ -130,9 +201,20 @@ public class Vehicle implements Serializable {
 		this.owner = owner;
 	}
 
+	// ===== MÉTODOS =====
+
+	/**
+	 * Representación en texto del vehículo.
+	 * No incluye el owner para evitar cargas LAZY innecesarias.
+	 */
 	@Override
 	public String toString() {
-		return "Vehicle [vehicleId=" + vehicleId + ", brand=" + brand + ", model=" + model + ", year=" + year
-			+ ", licensePlate=" + licensePlate + ", price=" + price + "]";
+		return "Vehicle [vehicleId=" + vehicleId
+				+ ", brand=" + brand
+				+ ", model=" + model
+				+ ", year=" + year
+				+ ", licensePlate=" + licensePlate
+				+ ", price=" + price
+				+ "]";
 	}
 }

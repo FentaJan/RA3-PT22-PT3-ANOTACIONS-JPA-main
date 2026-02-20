@@ -1,24 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Archivo de configuración de Hibernate
+    Define cómo Hibernate se conecta a la base de datos y otras propiedades.
+-->
 <!DOCTYPE hibernate-configuration PUBLIC
-		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-	<session-factory>
-		
-		<property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-		<property name="hibernate.connection.url">
-			jdbc:mysql://localhost:3306/bdd?useSSL=false&amp;serverTimezone=UTC
-		</property>
-		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">1234</property>
-		
-		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
-		
-		<property name="hibernate.show_sql">true</property>
-		<property name="hibernate.format_sql">true</property>
-		
-		<property name="hibernate.hbm2ddl.auto">create-drop</property>
-		
-	</session-factory>
+    <session-factory>
+        <!-- ===== CONFIGURACIÓN DE CONEXIÓN ===== -->
+
+        <!-- Driver JDBC de MySQL -->
+        <property name="hibernate.connection.driver_class">
+            com.mysql.cj.jdbc.Driver
+        </property>
+
+        <!-- URL de conexión a la base de datos -->
+        <property name="hibernate.connection.url">
+            jdbc:mysql://localhost:3306/bdd?useSSL=false&amp;serverTimezone=UTC
+        </property>
+        <!-- Explicación:
+             - localhost:3306 → servidor MySQL local
+             - bdd → nombre de la base de datos
+             - useSSL=false → desactiva SSL (solo en desarrollo)
+             - serverTimezone=UTC → evita errores de zona horaria -->
+
+        <!-- Usuario y contraseña de la base de datos -->
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">1234</property>
+
+        <!-- ===== DIALECTO DE BASE DE DATOS ===== -->
+        <property name="hibernate.dialect">
+            org.hibernate.dialect.MySQL5Dialect
+        </property>
+        <!-- Explicación:
+             Hibernate necesita saber qué sintaxis SQL usar según la base de datos.
+             MySQL5Dialect → optimizado para MySQL 5.x y 8.x -->
+
+        <!-- ===== OPCIONES DE DEPURACIÓN ===== -->
+        <property name="hibernate.show_sql">true</property>
+        <!-- Muestra el SQL generado en consola -->
+
+        <property name="hibernate.format_sql">true</property>
+        <!-- Formatea el SQL para que sea más legible -->
+
+        <!-- ===== ESTRATEGIA DE CREACIÓN DE TABLAS ===== -->
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+        <!-- Opciones comunes:
+             - create → crea tablas desde cero (borra existentes)
+             - update → actualiza tablas existentes sin borrarlas
+             - create-drop → crea al iniciar y borra al cerrar
+             - validate → solo valida esquema sin modificar la BD
+        -->
+        <!-- IMPORTANTE: create-drop se usa solo en desarrollo -->
+    </session-factory>
 </hibernate-configuration>
