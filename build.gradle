@@ -15,9 +15,6 @@ dependencies {
 	
 	testImplementation 'junit:junit:4.13'
 	
-	// Driver JDBC de MySQL
-	implementation 'mysql:mysql-connector-java:8.0.33'
-
-	// Hibernate ORM
-	implementation 'org.hibernate:hibernate-core:5.6.15.Final'
+	// Db4o - Object-Oriented Database
+	implementation 'com.db4o:db4o-all:8.0.249'
 }

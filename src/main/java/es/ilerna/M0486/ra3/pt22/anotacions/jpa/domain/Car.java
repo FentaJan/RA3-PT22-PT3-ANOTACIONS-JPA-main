@@ -1,35 +1,11 @@
 package es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain;
 
-// Importaciones de JPA
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-
 /**
- * Entidad Car
+ * Clase Car
  *
  * - Representa un coche en el modelo de dominio.
  * - Hereda de Vehicle.
- * - Usa herencia JPA con estrategia JOINED.
- * - Tiene su propia tabla "car" que se une con "vehicle"
- *   mediante la clave primaria compartida.
- */
-@Entity                         // Marca la clase como entidad JPA
-@Table(name = "car")            // Tabla específica para esta subclase
-@PrimaryKeyJoinColumn(name = "vehicle_id")
-/*
- * @PrimaryKeyJoinColumn indica que:
- * - La clave primaria de la tabla "car" es también una clave foránea
- * - Apunta al id de la tabla "vehicle"
- * - Esto es típico de la estrategia JOINED
- */
-@DiscriminatorValue("CAR")
-/*
- * Valor que se guarda en la columna discriminadora
- * (definida en la clase Vehicle) para identificar
- * que este registro es de tipo Car
+ * - Sin anotaciones JPA (Db4o persiste la jerarquía completa)
  */
 public class Car extends Vehicle {
 
@@ -41,18 +17,7 @@ public class Car extends Vehicle {
 
 	// ===== ATRIBUTOS PROPIOS DE CAR =====
 
-	@Column(name = "num_doors")
-	/*
-	 * Número de puertas del coche.
-	 * Se almacena en la columna num_doors de la tabla "car".
-	 */
 	private Integer numDoors;
-
-	@Column(name = "trunk_capacity")
-	/*
-	 * Capacidad del maletero (por ejemplo, en litros).
-	 * Se almacena en la tabla "car".
-	 */
 	private Double trunkCapacity;
 
 	// ===== CONSTRUCTORES =====
@@ -120,7 +85,7 @@ public class Car extends Vehicle {
 	/**
 	 * Representación en texto del objeto.
 	 * Útil para depuración y logs.
-	 * Usa getters heredados de Vehicle.
+	 * Incluye campos heredados de Vehicle y propios de Car.
 	 */
 	@Override
 	public String toString() {
@@ -129,6 +94,7 @@ public class Car extends Vehicle {
 				+ ", model=" + this.getModel()
 				+ ", year=" + this.getYear()
 				+ ", licensePlate=" + this.getLicensePlate()
+				+ ", price=" + this.getPrice()
 				+ ", numDoors=" + numDoors
 				+ ", trunkCapacity=" + trunkCapacity
 				+ "]";

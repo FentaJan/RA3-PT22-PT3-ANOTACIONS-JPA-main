@@ -1,91 +1,28 @@
 package es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-// Importaciones JPA
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Entidad Person
+ * Clase Person
  *
  * - Clase base para Teacher y Student
- * - Usa herencia SINGLE_TABLE
- * - Todos los tipos de personas se almacenan en la tabla "person"
- * - La columna "person_type" distingue el subtipo
- */
-@Entity                         // Marca la clase como entidad JPA
-@Table(name = "person")         // Tabla única para toda la jerarquía
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-/*
- * SINGLE_TABLE:
- * - Una sola tabla para Person, Teacher y Student
- * - Columnas extra pueden ser NULL según el subtipo
- */
-@DiscriminatorColumn(
-		name = "person_type",
-		discriminatorType = DiscriminatorType.STRING
-)
-/*
- * Columna que indica el tipo real de la entidad:
- * por ejemplo: "STUDENT", "TEACHER"
+ * - Sin anotaciones JPA (Db4o persiste objetos directamente)
+ * - Todos los tipos de personas se heredan de esta clase
  */
 public class Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	// Requerido para entidades serializables
 
-	// ===== CLAVE PRIMARIA =====
+	// ===== ATRIBUTOS =====
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	/*
-	 * IDENTITY:
-	 * - La base de datos genera el ID (AUTO_INCREMENT)
-	 */
-	@Column(name = "person_id")
 	private Integer personId;
-
-	// ===== ATRIBUTOS BÁSICOS =====
-
-	@Column(name = "name", nullable = false)
-	/*
-	 * Nombre obligatorio (NOT NULL en la BD)
-	 */
 	private String name;
-
-	@Column(name = "email")
 	private String email;
-
-	@Column(name = "phone")
 	private String phone;
-
-	// ===== RELACIÓN ONE-TO-MANY CON VEHICLE =====
-
-	@OneToMany(
-			mappedBy = "owner",          // Campo en Vehicle que mantiene la FK
-			cascade = CascadeType.ALL,   // Propaga persist, remove, update, etc.
-			fetch = FetchType.LAZY       // Carga diferida (recomendado)
-	)
-	/*
-	 * Relación bidireccional:
-	 * - Una persona puede tener muchos vehículos
-	 * - Vehicle tiene la FK (ManyToOne)
-	 */
-	private Set<Vehicle> vehicles = new HashSet<>();
+	private List<Vehicle> vehicles = new ArrayList<>();
 
 	// ===== CONSTRUCTORES =====
 
@@ -138,11 +75,11 @@ public class Person implements Serializable {
 		this.phone = phone;
 	}
 
-	public Set<Vehicle> getVehicles() {
+	public List<Vehicle> getVehicles() {
 		return vehicles;
 	}
 
-	public void setVehicles(Set<Vehicle> vehicles) {
+	public void setVehicles(List<Vehicle> vehicles) {
 		this.vehicles = vehicles;
 	}
 
