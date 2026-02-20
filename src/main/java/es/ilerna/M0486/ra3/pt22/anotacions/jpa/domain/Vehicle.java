@@ -126,6 +126,17 @@ public class Vehicle implements Serializable {
 
 	/**
 	 * Representación en texto del vehículo.
+	 * Formato resumido para el listado de vehículos.
+	 */
+	public String toStringShort() {
+		return this.getClass().getSimpleName() + " [brand=" + brand
+				+ ", year=" + year
+				+ ", price=" + price
+				+ "]";
+	}
+
+	/**
+	 * Representación en texto del vehículo.
 	 * Incluye todos los atributos.
 	 */
 	@Override

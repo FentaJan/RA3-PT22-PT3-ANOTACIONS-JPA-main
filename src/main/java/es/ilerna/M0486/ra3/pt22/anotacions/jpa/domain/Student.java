@@ -1,23 +1,11 @@
 package es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain;
 
-// Importaciones JPA
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-
 /**
- * Entidad Student
+ * Clase Student
  *
  * - Representa un estudiante.
  * - Hereda de la clase base Person.
- * - Usa herencia JPA con estrategia SINGLE_TABLE.
- * - Se almacena en la misma tabla "person".
- */
-@Entity                         // Marca la clase como entidad JPA
-@DiscriminatorValue("STUDENT")
-/*
- * Valor que se guarda en la columna person_type
- * para indicar que este registro corresponde a un Student
+ * - Sin anotaciones JPA (Db4o persiste la jerarquía completa)
  */
 public class Student extends Person {
 
@@ -26,17 +14,7 @@ public class Student extends Person {
 
 	// ===== ATRIBUTOS PROPIOS DE STUDENT =====
 
-	@Column(name = "enrollment_number")
-	/*
-	 * Número de matrícula del estudiante.
-	 * Solo se usa cuando person_type = 'STUDENT'
-	 */
 	private String enrollmentNumber;
-
-	@Column(name = "major")
-	/*
-	 * Carrera o especialidad que estudia el estudiante.
-	 */
 	private String major;
 
 	// ===== CONSTRUCTORES =====

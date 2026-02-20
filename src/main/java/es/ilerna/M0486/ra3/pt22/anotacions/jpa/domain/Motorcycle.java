@@ -1,32 +1,11 @@
 package es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain;
 
-// Importaciones JPA
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-
 /**
- * Entidad Motorcycle
+ * Clase Motorcycle
  *
  * - Representa una motocicleta en el modelo de dominio.
  * - Hereda de la clase Vehicle.
- * - Usa herencia JPA con estrategia JOINED.
- * - Tiene su propia tabla "motorcycle" relacionada con "vehicle".
- */
-@Entity                         // Marca la clase como entidad JPA
-@Table(name = "motorcycle")     // Tabla específica para la subclase
-@PrimaryKeyJoinColumn(name = "vehicle_id")
-/*
- * Indica que:
- * - motorcycle.vehicle_id es la clave primaria
- * - y a la vez clave foránea que referencia a vehicle.id
- */
-@DiscriminatorValue("MOTORCYCLE")
-/*
- * Valor almacenado en la columna discriminadora
- * (definida en Vehicle) para identificar este tipo de vehículo
+ * - Sin anotaciones JPA (Db4o persiste la jerarquía completa)
  */
 public class Motorcycle extends Vehicle {
 
@@ -35,19 +14,7 @@ public class Motorcycle extends Vehicle {
 
 	// ===== ATRIBUTOS PROPIOS DE MOTORCYCLE =====
 
-	@Column(name = "engine_cc")
-	/*
-	 * Cilindrada del motor (en centímetros cúbicos).
-	 * Se guarda en la columna engine_cc de la tabla motorcycle.
-	 */
 	private Integer engineCc;
-
-	@Column(name = "has_sidecar")
-	/*
-	 * Indica si la motocicleta tiene sidecar.
-	 * true  -> tiene sidecar
-	 * false -> no tiene sidecar
-	 */
 	private Boolean hasSidecar;
 
 	// ===== CONSTRUCTORES =====
@@ -114,8 +81,19 @@ public class Motorcycle extends Vehicle {
 	// ===== MÉTODOS =====
 
 	/**
+	 * Representación corta del objeto.
+	 * Formato: Motorcycle (brand, year, price, hasSidecar)
+	 */
+	public String toStringShort() {
+		return "Motorcycle (" + this.getBrand()
+				+ ", " + this.getYear()
+				+ ", " + this.getPrice()
+				+ ", " + hasSidecar + ")";
+	}
+
+	/**
 	 * Representación en texto del objeto.
-	 * Incluye atributos heredados y propios.
+	 * Incluye atributos heredados de Vehicle y propios de Motorcycle.
 	 */
 	@Override
 	public String toString() {
@@ -124,6 +102,7 @@ public class Motorcycle extends Vehicle {
 				+ ", model=" + this.getModel()
 				+ ", year=" + this.getYear()
 				+ ", licensePlate=" + this.getLicensePlate()
+				+ ", price=" + this.getPrice()
 				+ ", engineCc=" + engineCc
 				+ ", hasSidecar=" + hasSidecar
 				+ "]";

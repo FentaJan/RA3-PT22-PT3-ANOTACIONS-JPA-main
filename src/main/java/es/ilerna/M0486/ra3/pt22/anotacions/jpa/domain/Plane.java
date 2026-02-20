@@ -1,32 +1,11 @@
 package es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain;
 
-// Importaciones JPA
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-
 /**
- * Entidad Plane
+ * Clase Plane
  *
  * - Representa un avión en el modelo de dominio.
  * - Hereda de la clase Vehicle.
- * - Usa herencia JPA con estrategia JOINED.
- * - Tiene su propia tabla "plane" relacionada con "vehicle".
- */
-@Entity                         // Marca la clase como entidad JPA
-@Table(name = "plane")          // Tabla específica de la subclase
-@PrimaryKeyJoinColumn(name = "vehicle_id")
-/*
- * Indica que:
- * - plane.vehicle_id es la clave primaria
- * - y también clave foránea que referencia a vehicle.id
- */
-@DiscriminatorValue("PLANE")
-/*
- * Valor almacenado en la columna discriminadora
- * (definida en Vehicle) para identificar este tipo de vehículo
+ * - Sin anotaciones JPA (Db4o persiste la jerarquía completa)
  */
 public class Plane extends Vehicle {
 
@@ -35,17 +14,7 @@ public class Plane extends Vehicle {
 
 	// ===== ATRIBUTOS PROPIOS DE PLANE =====
 
-	@Column(name = "max_altitude")
-	/*
-	 * Altitud máxima que puede alcanzar el avión.
-	 * Normalmente medida en metros o pies (según diseño).
-	 */
 	private Double maxAltitude;
-
-	@Column(name = "num_engines")
-	/*
-	 * Número de motores del avión.
-	 */
 	private Integer numEngines;
 
 	// ===== CONSTRUCTORES =====
@@ -112,8 +81,20 @@ public class Plane extends Vehicle {
 	// ===== MÉTODOS =====
 
 	/**
+	 * Representación corta del objeto.
+	 * Formato: Plane (brand, year, price, maxAltitude, numEngines)
+	 */
+	public String toStringShort() {
+		return "Plane (" + this.getBrand()
+				+ ", " + this.getYear()
+				+ ", " + this.getPrice()
+				+ ", " + maxAltitude
+				+ ", " + numEngines + ")";
+	}
+
+	/**
 	 * Representación en texto del objeto.
-	 * Incluye atributos heredados y específicos.
+	 * Incluye atributos heredados de Vehicle y específicos de Plane.
 	 */
 	@Override
 	public String toString() {
@@ -122,6 +103,7 @@ public class Plane extends Vehicle {
 				+ ", model=" + this.getModel()
 				+ ", year=" + this.getYear()
 				+ ", licensePlate=" + this.getLicensePlate()
+				+ ", price=" + this.getPrice()
 				+ ", maxAltitude=" + maxAltitude
 				+ ", numEngines=" + numEngines
 				+ "]";

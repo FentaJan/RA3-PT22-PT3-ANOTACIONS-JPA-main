@@ -1,23 +1,11 @@
 package es.ilerna.M0486.ra3.pt22.anotacions.jpa.domain;
 
-// Importaciones JPA
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-
 /**
- * Entidad Teacher
+ * Clase Teacher
  *
  * - Representa un profesor.
  * - Hereda de la clase base Person.
- * - Usa herencia JPA con estrategia SINGLE_TABLE.
- * - Se diferencia mediante el discriminador "TEACHER".
- */
-@Entity                         // Marca la clase como entidad JPA
-@DiscriminatorValue("TEACHER")
-/*
- * Valor que se almacena en la columna person_type
- * para indicar que este registro corresponde a un Teacher
+ * - Sin anotaciones JPA (Db4o persiste la jerarquía completa)
  */
 public class Teacher extends Person {
 
@@ -26,17 +14,7 @@ public class Teacher extends Person {
 
 	// ===== ATRIBUTOS PROPIOS DE TEACHER =====
 
-	@Column(name = "employee_id")
-	/*
-	 * Identificador del empleado (profesor).
-	 * Solo se utiliza cuando person_type = 'TEACHER'
-	 */
 	private String employeeId;
-
-	@Column(name = "department")
-	/*
-	 * Departamento al que pertenece el profesor.
-	 */
 	private String department;
 
 	// ===== CONSTRUCTORES =====

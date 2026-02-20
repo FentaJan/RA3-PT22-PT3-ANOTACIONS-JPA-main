@@ -83,6 +83,18 @@ public class Car extends Vehicle {
 	// ===== MÉTODOS =====
 
 	/**
+	 * Representación corta del objeto.
+	 * Formato: Car (brand, year, price, numDoors, trunkCapacity)
+	 */
+	public String toStringShort() {
+		return "Car (" + this.getBrand()
+				+ ", " + this.getYear()
+				+ ", " + this.getPrice()
+				+ ", " + numDoors
+				+ ", " + trunkCapacity + ")";
+	}
+
+	/**
 	 * Representación en texto del objeto.
 	 * Útil para depuración y logs.
 	 * Incluye campos heredados de Vehicle y propios de Car.
